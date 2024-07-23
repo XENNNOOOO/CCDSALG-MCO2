@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "LinkedList.h"
+#include "linked_list.h"
 
 typedef struct NodeTag {
     List            list;
@@ -18,10 +18,10 @@ typedef struct QueueTag {
 } Queue;
 
 void initQueue(Queue* queue);
-void enqueue(Queue* queue, List list);
-List dequeue(Queue* queue);
-List frontOfQueue(Queue* queue);
-List rearOfQueue(Queue* queue);
+void enqueue(Queue* queue, List* list);
+List* dequeue(Queue* queue);
+List* frontOfQueue(Queue* queue);
+List* rearOfQueue(Queue* queue);
 bool isQueueEmpty(Queue queue);
 void clearQueue(Queue* queue);
 

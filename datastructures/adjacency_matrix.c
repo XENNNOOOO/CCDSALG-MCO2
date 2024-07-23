@@ -1,20 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
+#include "adjacency_matrix.h"
 
-#define MAX_VERTICES 100
-
-typedef struct {
-    char *name;
-    int id;
-} Vertex;
-
-bool** adjacencyMatrix(char *fileName, Vertex graph[]) {
-    int numVertices;
-    char tempString[50];
-    char throwString[50];
-    int tempInt;
+bool** fillAdjacencyMatrix(char *fileName, Vertex graph[]) {
+    int     numVertices;
+    char    tempString[50];
+    char    throwString[50];
+    int     tempInt;
 
     // File checking
     FILE *file = fopen(fileName, "r");
@@ -36,13 +26,13 @@ bool** adjacencyMatrix(char *fileName, Vertex graph[]) {
     }
 
     for (int i = 0; i < numVertices; ++i) {
-        graph[i].name = (char *)malloc(50 * sizeof(char)); 
+        graph[i].name = (char *)malloc(STRING_LEN * sizeof(char));
     }
 
     // Read adjacent vectors
     int count = 0;
     for (int i = 0; i < numVertices; ++i) {
-        graph[i].name = (char *)malloc(50 * sizeof(char)); 
+        graph[i].name = (char *)malloc(STRING_LEN * sizeof(char));
         fscanf(file, "%s", graph[i].name);
         graph[i].id = i;
 
@@ -60,35 +50,4 @@ bool** adjacencyMatrix(char *fileName, Vertex graph[]) {
 
     fclose(file);
     return adjacencyMatrix;
-}
-
-int main() {
-    char *fileName = "graph2.txt";  
-    Vertex graph[MAX_VERTICES];
-    bool **adjMatrix;
-    int numVertices = 0;
-
-    adjMatrix = adjacencyMatrix(fileName, graph);
-    if (adjMatrix == NULL) {
-        fprintf(stderr, "Error reading adjacency matrix\n");
-        return 1;
-    }
-
-    FILE *file = fopen(fileName, "r");
-
-    fseek(file, 0, SEEK_SET);
-    fscanf(file, "%d", &numVertices);
-
-    for (int i = 0; i < numVertices; i++) {
-        for (int j = 0; j < numVertices; j++) {
-            if(adjMatrix[i][j] == true) {
-                printf(" %d ", 1);      
-            } else {
-                printf(" %d ", 0);
-            }
-        }
-        printf("%c", '\n');
-    }
-    
-    return 0;
 }

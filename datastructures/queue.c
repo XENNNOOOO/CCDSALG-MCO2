@@ -19,10 +19,10 @@ void initQueue(Queue* queue) {
  * @param queue A pointer to the queue where the element will be added.
  * @param list The list to be added to the queue.
  */
-    void enqueue(Queue* queue,List list) {
+    void enqueue(Queue* queue,List* list) {
     Node* newNode = (Node*) malloc(sizeof(Node));
 
-    newNode->list = list;
+    newNode->list = *list;
     newNode->next = NULL;
     newNode->prev = queue->rear;
 
@@ -41,13 +41,13 @@ void initQueue(Queue* queue) {
  * 
  * @return The string at the front of the queue, or NULL if the queue is empty.
  */
-List dequeue(Queue* queue) {
+List* dequeue(Queue* queue) {
     if (isQueueEmpty(*queue)) {
         printf("Queue is empty!\n");
         return NULL;
     }
 
-    List data = queue->front->list;
+    List* data = &queue->front->list;
     Node* temp = queue->front;
     queue->front = queue->front->next;
 
@@ -69,13 +69,13 @@ List dequeue(Queue* queue) {
  * 
  * @return The string at the front of the queue, or NULL if the queue is empty.
  */
-List frontOfQueue(Queue* queue) {
+List* frontOfQueue(Queue* queue) {
     if (isQueueEmpty(*queue)) {
         printf("Queue is empty!\n");
         return NULL;
     }
 
-    return queue->front->list;
+    return &queue->front->list;
 }
 
 /**
@@ -85,13 +85,13 @@ List frontOfQueue(Queue* queue) {
  * 
  * @return The string at the rear of the queue, or NULL if the queue is empty.
  */
-List rearOfQueue(Queue* queue) {
+List* rearOfQueue(Queue* queue) {
     if (isQueueEmpty(*queue)) {
         printf("Queue is empty!\n");
         return NULL;
     }
 
-    return queue->rear->list;
+    return &queue->rear->list;
 }
 
 /**

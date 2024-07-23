@@ -1,8 +1,6 @@
-#include "Queue.h"
-#include "Stack.h"
-#include "LinkedList.h"
+#include "search.h"
 
-List* bfs(List root) {
+List* getBFSTraversal(List root) {
     Queue temp;
     Queue queue;
     Queue storage;
@@ -13,12 +11,12 @@ List* bfs(List root) {
     initQueue(&temp);
     initQueue(&storage);
 
-    enqueue(&temp, root);
+    enqueue(&temp, &root);
     while (!isQueueEmpty(temp)) {
         while (!isQueueEmpty(temp)) {
-            List current = dequeue(&temp);
-            for (int i = 0; i < current.numOfLinks; i++) {
-                enqueue(&queue, current.lists[i]);
+            List* current = dequeue(&temp);
+            for (int i = 0; i < current->numOfLinks; i++) {
+                enqueue(&queue, current->lists[i]);
             }
             enqueue(&storage, current);
             numOfParents++;
@@ -28,20 +26,20 @@ List* bfs(List root) {
         }
     }
 
-    List* lists = malloc(numOfParents * sizeof(List));
+    List* lists = (List *)malloc(numOfParents * sizeof(List));
 
     if (lists == NULL) {
         return NULL;
     }
 
     for (int i = 0; i < numOfParents; i++) {
-        lists[i] = dequeue(&storage);
+        lists[i] = *dequeue(&storage);
     }
 
     return lists;
 }
 
-List* dfs (List root) {
+List* getDFSTraversal(List root) {
     Stack temp;
     Stack stack;
     Stack reverse;
@@ -54,28 +52,28 @@ List* dfs (List root) {
     initStack(&reverse);
     initQueue(&storage);
 
-    push(&stack, root);
+    push(&stack, &root);
 
-    while(!isStackEmpty(stack) && !isStackEmpty(temp)) {
-        for(int i = 0; i < peekStack(stack).numOfLinks; i++) {
-            push(reverse, peekStack(stack)->lists[i]);
+    while (!isStackEmpty(stack) && !isStackEmpty(temp)) {
+        for (int i = 0; i < peekStack(stack)->numOfLinks; i++) {
+            push(&reverse, peekStack(stack)->lists[i]);
         }
-        for(int i = 0; i < peekStack(stack).numOfLinks; i++) {
-            push(temp, pop(reverse));
+        for (int i = 0; i < peekStack(stack)->numOfLinks; i++) {
+            push(&temp, pop(&reverse));
         }
-        enqueue(storage, pop(stack));
+        enqueue(&storage, pop(&stack));
         numOfParents++;
-        push(stack, pop(temp));
+        push(&stack, pop(&temp));
     }
 
-    List* lists = malloc(numOfParents * sizeof(List));
+    List* lists = (List *)malloc(numOfParents * sizeof(List));
 
     if (lists == NULL) {
         return NULL;
     }
 
-    for(int i = 0; i < numOfParents; i++) {
-        lists[i] = dequeue(&storage);
+    for (int i = 0; i < numOfParents; i++) {
+        lists[i] = *dequeue(&storage);
     }
 
     return lists;
