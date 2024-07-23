@@ -7,11 +7,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "adjacency_matrix.h"
 
 #include "datastructures/queue.c"
 #include "datastructures/stack.c"
 
-List* getBFSTraversal(List root);
-List* getDFSTraversal(List root);
+Vertex* getBFSTraversal(List root);
+Vertex* getDFSTraversal(List root);
 
 #endif //CCDSALG_MCO2_SEARCH_H

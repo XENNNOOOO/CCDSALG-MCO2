@@ -1,80 +1,95 @@
 #include "search.h"
 
-List* getBFSTraversal(List root) {
-    Queue temp;
-    Queue queue;
-    Queue storage;
+bool isVertexTraversed(Vertex traversal*, Vertex vertex, int numOfVertices) {
+    bool isTraversed = false;
+    for(int i = 0; i < numOfVertices; i++) {
+        if(traversal[i].name == vertex.name) {
+            isTraversed = true;
+            break;
+        }
+    }
 
-    int numOfParents = 0;
+    return isTraversed;
+}
 
-    initQueue(&queue);
-    initQueue(&temp);
-    initQueue(&storage);
+Vertex* getBFSTraversal(bool** adjacencyMatrix, Vertex vertices[], Vertex root, int numOfVertices) {
+    Queue children;
+    Queue current;
 
-    enqueue(&temp, &root);
-    while (!isQueueEmpty(temp)) {
-        while (!isQueueEmpty(temp)) {
-            List* current = dequeue(&temp);
-            for (int i = 0; i < current->numOfLinks; i++) {
-                enqueue(&queue, current->lists[i]);
+    Vertex *traversal = malloc(sizeof(Vertex) * numOfVertices);
+    int currentIndex = 0;
+
+    initQueue(&children);
+    initQueue(&current);
+
+    enqueue(&current, &root);
+
+    while(currentIndex < numOfVertices) {
+        while(!isQueueEmpty(current)){
+            for(int i = 0; i < numOfVertices; i++){
+                if(adjacencyMatrix[frontOfQueue(&current)->id][i] &&
+                    !isVertexTraversed(traversal, vertices[i], numOfVertices)){
+                    enqueue(&children, &vertices[i]);
+                }
             }
-            enqueue(&storage, current);
-            numOfParents++;
+
+            traversal[currentIndex] = *dequeue(&current);
+            currentIndex++;
         }
-        while (!isQueueEmpty(queue)) {
-            enqueue(&temp, dequeue(&queue));
+        while(!isQueueEmpty(children)){
+            enqueue(&current, dequeue(&children));
         }
     }
 
-    List* lists = (List *)malloc(numOfParents * sizeof(List));
-
-    if (lists == NULL) {
-        return NULL;
-    }
-
-    for (int i = 0; i < numOfParents; i++) {
-        lists[i] = *dequeue(&storage);
-    }
-
-    return lists;
+    return traversal;
 }
 
-List* getDFSTraversal(List root) {
+bool isInStack(Stack stack, Vertex *vertex) {
     Stack temp;
-    Stack stack;
-    Stack reverse;
-    Queue storage;
-
-    int numOfParents = 0;
-
     initStack(&temp);
-    initStack(&stack);
-    initStack(&reverse);
-    initQueue(&storage);
-
-    push(&stack, &root);
-
-    while (!isStackEmpty(stack) && !isStackEmpty(temp)) {
-        for (int i = 0; i < peekStack(stack)->numOfLinks; i++) {
-            push(&reverse, peekStack(stack)->lists[i]);
+    bool isInStack = false;
+    while(!isStackEmpty(stack) && isInStack == false) {
+        if(peekStack(stack)->name == vertex->name) {
+            isInStack = true;
         }
-        for (int i = 0; i < peekStack(stack)->numOfLinks; i++) {
-            push(&temp, pop(&reverse));
+        else {
+            push(&temp, pop(&stack));
         }
-        enqueue(&storage, pop(&stack));
-        numOfParents++;
-        push(&stack, pop(&temp));
     }
-
-    List* lists = (List *)malloc(numOfParents * sizeof(List));
-
-    if (lists == NULL) {
-        return NULL;
-    }
-
-    for (int i = 0; i < numOfParents; i++) {
-        lists[i] = *dequeue(&storage);
-    }
-
-    return lists;
+    push(&stack, pop(&temp));
+    return isInStack;
 }
+
+Vertex* getDFSTraversal(bool** adjacencyMatrix, Vertex vertices[], Vertex root, int numOfVertices) {
+    Stack children;
+    Stack current;
+
+    Vertex *traversal = malloc(sizeof(Vertex) * numOfVertices);
+    int currentIndex = 0;
+
+    initStack(&children);
+    initStack(&current);
+
+    push(&current, &root);
+
+    while(currentIndex < numOfVertices) {
+        for(int i = 0; i < numOfVertices; i++){
+            if(adjacencyMatrix[peekStack(current)->id][i] &&
+                !isVertexTraversed(traversal, vertices[i], numOfVertices)){
+                push(&children, &vertices[i]);
+                }
+        }
+        while(!isStackEmpty(children)) {
+            if(!isInStack(current, peekStack(children))){
+                push(&current, pop(&children));
+            }else {
+                pop(&children);
+            }
+        }
+    }
+
+    return traversal;
+}
+
+
+

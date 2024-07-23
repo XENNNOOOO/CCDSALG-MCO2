@@ -18,10 +18,10 @@ void initStack(Stack* stack) {
  * @param stack A pointer to the stack where the string will be pushed.
  * @param string The string to be pushed onto the stack.
  */
-void push(Stack* stack, List* list) {
+void push(Stack* stack, Vertex* vertex) {
     if (!isStackFull(*stack)) {
         stack->topIndex++;
-        stack->list[stack->topIndex] = *list;
+        stack->vertices[stack->topIndex] = *vertex;
     } else {
         printf("Stack overflow!\n");
     }
@@ -34,9 +34,9 @@ void push(Stack* stack, List* list) {
  * 
  * @return The string at the top of the stack, or NULL if the stack is empty.
  */
-List* pop(Stack* stack) {
+Vertex* pop(Stack* stack) {
     if (!isStackEmpty(*stack)) {
-        return &stack->list[stack->topIndex--];
+        return &stack->vertices[stack->topIndex--];
     } else {
         printf("Stack underflow!\n");
         return NULL;
@@ -50,8 +50,8 @@ List* pop(Stack* stack) {
  * 
  * @return The string at the top of the stack.
  */
-List* peekStack(Stack stack) {
-    return &stack.list[stack.topIndex];
+Vertex* peekStack(Stack stack) {
+    return &stack.vertices[stack.topIndex];
 }
 
 /**
