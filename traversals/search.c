@@ -1,7 +1,12 @@
 #include "search.h"
 
-bool isVertexTraversed(Vertex traversal*, Vertex vertex, int numOfVertices) {
+bool isVertexTraversed(Vertex *traversal, Vertex vertex, int numOfVertices) {
     bool isTraversed = false;
+    if (traversal == NULL) {
+        // Handle or log the error, depending on your application logic
+        return false;  // or true, depending on how you want to handle this case
+    }
+
     for(int i = 0; i < numOfVertices; i++) {
         if(traversal[i].name == vertex.name) {
             isTraversed = true;
@@ -44,12 +49,12 @@ Vertex* getBFSTraversal(bool** adjacencyMatrix, Vertex vertices[], Vertex root, 
     return traversal;
 }
 
-bool isInStack(Stack stack, Vertex *vertex) {
+bool isInStack(Stack stack, Vertex vertex) {
     Stack temp;
     initStack(&temp);
     bool isInStack = false;
     while(!isStackEmpty(stack) && isInStack == false) {
-        if(peekStack(stack)->name == vertex->name) {
+        if(peekStack(stack).name == vertex.name) {
             isInStack = true;
         }
         else {
@@ -74,12 +79,12 @@ Vertex* getDFSTraversal(bool** adjacencyMatrix, Vertex vertices[], Vertex root, 
 
     while(currentIndex < numOfVertices) {
         for(int i = 0; i < numOfVertices; i++){
-            if(adjacencyMatrix[peekStack(current)->id][i] &&
+            if(adjacencyMatrix[peekStack(current).id][i] &&
                 !isVertexTraversed(traversal, vertices[i], numOfVertices)){
                 push(&children, &vertices[i]);
                 }
         }
-        traversal[currentIndex] = *peekStack(current);
+        traversal[currentIndex] = peekStack(current);
         currentIndex++;
         while(!isStackEmpty(children)) {
             if(!isInStack(current, peekStack(children))){

@@ -12,7 +12,10 @@
 #include "datastructures/queue.c"
 #include "datastructures/stack.c"
 
+bool isVertexTraversed(Vertex *traversal, Vertex vertex, int numOfVertices);
+bool isInStack(Stack stack, Vertex vertex);
 Vertex* getBFSTraversal(bool** adjacencyMatrix, Vertex vertices[], Vertex root, int numOfVertices);
 Vertex* getDFSTraversal(bool** adjacencyMatrix, Vertex vertices[], Vertex root, int numOfVertices);
+
 
 #endif //CCDSALG_MCO2_SEARCH_H
