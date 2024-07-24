@@ -17,7 +17,7 @@ typedef struct StackTag {
 void initStack(Stack* stack);
 void push(Stack* stack, Vertex* vertex);
 Vertex* pop(Stack* stack);
-Vertex* peekStack(Stack stack);
+Vertex* peekStack(Stack* stack);
 bool isStackEmpty(Stack stack);
 bool isStackFull(Stack stack);
 void clearStack(Stack* stack);

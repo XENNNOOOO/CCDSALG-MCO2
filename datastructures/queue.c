@@ -19,7 +19,7 @@ void initQueue(Queue* queue) {
  * @param queue A pointer to the queue where the element will be added.
  * @param list The list to be added to the queue.
  */
-    void enqueue(Queue* queue,Vertex* vertex) {
+void enqueue(Queue* queue, Vertex* vertex) {
     Node* newNode = (Node*) malloc(sizeof(Node));
 
     newNode->vertex = *vertex;
@@ -32,13 +32,13 @@ void initQueue(Queue* queue) {
         queue->rear->next = newNode;
     }
     queue->rear = newNode;
-} 
+}
 
 /**
  * Removes and returns the front element of the queue.
- * 
+ *
  * @param queue A pointer to the queue from which the element will be removed.
- * 
+ *
  * @return The string at the front of the queue, or NULL if the queue is empty.
  */
 Vertex* dequeue(Queue* queue) {
@@ -64,9 +64,9 @@ Vertex* dequeue(Queue* queue) {
 
 /**
  * Returns the front element of the queue without removing it.
- * 
+ *
  * @param queue A pointer to the queue to peek at.
- * 
+ *
  * @return The string at the front of the queue, or NULL if the queue is empty.
  */
 Vertex* frontOfQueue(Queue* queue) {
@@ -80,9 +80,9 @@ Vertex* frontOfQueue(Queue* queue) {
 
 /**
  * Returns the rear element of the queue without removing it.
- * 
+ *
  * @param queue A pointer to the queue to peek at.
- * 
+ *
  * @return The string at the rear of the queue, or NULL if the queue is empty.
  */
 Vertex* rearOfQueue(Queue* queue) {

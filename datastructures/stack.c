@@ -29,9 +29,9 @@ void push(Stack* stack, Vertex* vertex) {
 
 /**
  * Pops the top string off the stack and returns it. If the stack is empty, prints an error message and returns NULL.
- * 
+ *
  * @param stack A pointer to the stack from which the string will be popped.
- * 
+ *
  * @return The string at the top of the stack, or NULL if the stack is empty.
  */
 Vertex* pop(Stack* stack) {
@@ -45,13 +45,13 @@ Vertex* pop(Stack* stack) {
 
 /**
  * Returns the string at the top of the stack without removing it.
- * 
+ *
  * @param stack The stack to peek at.
- * 
+ *
  * @return The string at the top of the stack.
  */
-Vertex* peekStack(Stack stack) {
-    return &stack.vertices[stack.topIndex];
+Vertex* peekStack(Stack* stack) {
+    return &stack->vertices[stack->topIndex];
 }
 
 /**

@@ -1,3 +1,6 @@
+#ifndef CCDSALG_MCO2_SEARCH_C
+#define CCDSALG_MCO2_SEARCH_C
+
 #include "search.h"
 
 bool isVertexTraversed(Vertex *traversal, Vertex vertex, int numOfVertices) {
@@ -98,5 +101,4 @@ Vertex* getDFSTraversal(bool** adjacencyMatrix, Vertex vertices[], Vertex root, 
     return traversal;
 }
 
-
-
+#endif

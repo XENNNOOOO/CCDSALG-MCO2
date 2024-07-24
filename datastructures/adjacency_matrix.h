@@ -1,7 +1,3 @@
-//
-// Created by Clive on 22 Jul 2024.
-//
-
 #ifndef CCDSALG_MCO2_ADJACENCY_MATRIX_H
 #define CCDSALG_MCO2_ADJACENCY_MATRIX_H
 
@@ -18,6 +14,7 @@ typedef struct {
     int     id;
 } Vertex;
 
-bool** fillAdjacencyMatrix(char *fileName, Vertex graph[]);
+int parseInt(char* str);
+bool** fillAdjacencyMatrix(char *fileName, Vertex graph[], int* numOfVertices);
 
 #endif //CCDSALG_MCO2_ADJACENCY_MATRIX_H
