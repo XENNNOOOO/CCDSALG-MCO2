@@ -79,6 +79,8 @@ Vertex* getDFSTraversal(bool** adjacencyMatrix, Vertex vertices[], Vertex root, 
                 push(&children, &vertices[i]);
                 }
         }
+        traversal[currentIndex] = *peekStack(current);
+        currentIndex++;
         while(!isStackEmpty(children)) {
             if(!isInStack(current, peekStack(children))){
                 push(&current, pop(&children));
