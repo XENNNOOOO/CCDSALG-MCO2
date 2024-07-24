@@ -14,7 +14,14 @@ typedef struct {
     int     id;
 } Vertex;
 
+typedef struct {
+    bool** adjacencyMatrix;
+    Vertex* graph;
+    int numOfVertices;
+} GraphInfo;
+
 int parseInt(char* str);
-bool** fillAdjacencyMatrix(char *fileName, Vertex graph[], int* numOfVertices);
+GraphInfo fillGraphInfo(char *fileName);
+
 
 #endif //CCDSALG_MCO2_ADJACENCY_MATRIX_H
