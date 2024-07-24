@@ -4,8 +4,8 @@
 #include "adjacency_matrix.h"
 
 int parseInt(char* str) {
-    char*   ptr;
-    int     num = (int) strtol(str, &ptr, 10);
+    char* ptr;
+    int num = (int) strtol(str, &ptr, 10);
 
     if (ptr == str) {
         printf("No digits were found\n");
@@ -18,54 +18,54 @@ int parseInt(char* str) {
     }
 }
 
-bool** fillAdjacencyMatrix(char *filename, Vertex graph[], int* numOfVertices) {
+GraphInfo fillGraphInfo(char *filename) {
+    GraphInfo result;
     char tempString[STRING_LEN];
 
-    // File checking
+    // file checking
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         perror("Error opening file");
-        return NULL;
+
+        //assign null/0
+        result.adjacencyMatrix = NULL;
+        result.graph = NULL;
+        result.numOfVertices = 0;
+        return result;
     }
 
-    // Read the first integer
-    fscanf(file, "%s", tempString);
-    *numOfVertices = parseInt(tempString);
-    strcpy(tempString, "");
+    // memory for vertices
+    result.graph = (Vertex *)malloc(result.numOfVertices * sizeof(Vertex));
+    for (int i = 0; i < result.numOfVertices; ++i) {
+        result.graph[i].name = (char *)malloc(STRING_LEN * sizeof(char));
+        result.graph[i].id = i;
+    }
 
-    // Allocate memory
-    bool **adjacencyMatrix = (bool **)malloc(*numOfVertices * sizeof(bool *));
-    for (int i = 0; i < *numOfVertices; ++i) {
-        adjacencyMatrix[i] = (bool *)malloc(*numOfVertices * sizeof(bool));
-        for (int j = 0; j < *numOfVertices; ++j) {
-            adjacencyMatrix[i][j] = false;
+    // memory for adjacency matrix
+    result.adjacencyMatrix = (bool **)malloc(result.numOfVertices * sizeof(bool *));
+    for (int i = 0; i < result.numOfVertices; ++i) {
+        result.adjacencyMatrix[i] = (bool *)malloc(result.numOfVertices * sizeof(bool));
+        for (int j = 0; j < result.numOfVertices; ++j) {
+            result.adjacencyMatrix[i][j] = false;
         }
     }
 
-    for (int i = 0; i < *numOfVertices; ++i) {
-        graph[i].name = (char *)malloc(STRING_LEN * sizeof(char));
-    }
-
-    // Read adjacent vectors
-    for (int i = 0; i < *numOfVertices; ++i) {
-        graph[i].name = (char *)malloc(STRING_LEN * sizeof(char));
-        fscanf(file, "%s", graph[i].name);
-        graph[i].id = i;
-
-
+    // read adjacent vectors
+    for (int i = 0; i < result.numOfVertices; ++i) {
+        fscanf(file, "%s", result.graph[i].name);
         while (fscanf(file, "%s", tempString) == 1 && strcmp(tempString, "-1") != 0) {
-            for (int j = 0; j < *numOfVertices; ++j) {
-                if (strcmp(tempString, graph[j].name) == 0) {
-                    adjacencyMatrix[i][j] = true;
-                    adjacencyMatrix[j][i] = true;
-                    break; 
+            for (int j = 0; j < result.numOfVertices; ++j) {
+                if (strcmp(tempString, result.graph[j].name) == 0) {
+                    result.adjacencyMatrix[i][j] = true;
+                    result.adjacencyMatrix[j][i] = true;
+                    break;
                 }
             }
         }
     }
 
     fclose(file);
-    return adjacencyMatrix;
+    return result;
 }
 
 #endif
