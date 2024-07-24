@@ -48,10 +48,7 @@ Vertex* dequeue(Queue* queue) {
     }
 
     Vertex* data = &queue->front->vertex;
-    Node* temp = queue->front;
     queue->front = queue->front->next;
-
-    free(temp);
 
     if (queue->front == NULL) {
         queue->rear = NULL;

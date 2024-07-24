@@ -25,47 +25,58 @@ Vertex* getBFSTraversal(bool** adjacencyMatrix, Vertex vertices[], Vertex root, 
     Queue current;
 
     Vertex* traversal = malloc(sizeof(Vertex) * numOfVertices);
-    int     currentIndex = 0;
+    if (traversal == NULL) {
+        // Handle allocation failure
+        return NULL;
+    }
+    int currentIndex = 0;
 
     initQueue(&children);
     initQueue(&current);
 
+    bool* visited = calloc(numOfVertices, sizeof(bool));
+    if (visited == NULL) {
+        // Handle allocation failure
+        free(traversal);
+        return NULL;
+    }
+
     enqueue(&current, &root);
+    visited[root.id] = true;
 
-    while (currentIndex < numOfVertices) {
-        while (!isQueueEmpty(current)){
-            for (int i = 0; i < numOfVertices; i++){
-                if (adjacencyMatrix[frontOfQueue(&current)->id][i] &&
-                    !isVertexTraversed(traversal, vertices[i], numOfVertices)){
-                    enqueue(&children, &vertices[i]);
-                }
+    while (currentIndex < numOfVertices && !isQueueEmpty(current)) {
+        Vertex* currentVertex = frontOfQueue(&current);
+
+        // Explore neighbors
+        for (int i = 0; i < numOfVertices; i++) {
+            if (adjacencyMatrix[currentVertex->id][i] && !visited[i]) {
+                enqueue(&children, &vertices[i]);
+                visited[i] = true; // Mark as visited
             }
-
-            traversal[currentIndex] = *dequeue(&current);
-            currentIndex++;
         }
-        while (!isQueueEmpty(children)){
+
+        traversal[currentIndex++] = *dequeue(&current);
+
+        // Move children to current queue
+        while (!isQueueEmpty(children)) {
             enqueue(&current, dequeue(&children));
         }
     }
 
+    free(visited);
     return traversal;
 }
 
-bool isInStack(Stack stack, Vertex vertex) {
-    Stack   temp;
-    bool    isInStack = false;
+bool isInStack(Stack* stack, Vertex vertex) {
+    bool isInStack = false;
 
-    initStack(&temp);
-    while (!isStackEmpty(stack) && isInStack == false) {
-        if (peekStack(&stack)->name == vertex.name) {
+    for (int i = 0; i <= stack->topIndex; i++) {
+        if (stack->vertices[i].id == vertex.id) {
             isInStack = true;
-        }
-        else {
-            push(&temp, pop(&stack));
+            break;
         }
     }
-    push(&stack, pop(&temp));
+
     return isInStack;
 }
 
@@ -74,31 +85,48 @@ Vertex* getDFSTraversal(bool** adjacencyMatrix, Vertex vertices[], Vertex root, 
     Stack current;
 
     Vertex* traversal = malloc(sizeof(Vertex) * numOfVertices);
-    int     currentIndex = 0;
+    if (traversal == NULL) {
+        // Handle allocation failure
+        return NULL;
+    }
+    int currentIndex = 0;
 
     initStack(&children);
     initStack(&current);
 
-    push(&current, &root);
+    bool* visited = calloc(numOfVertices, sizeof(bool));
+    if (visited == NULL) {
+        // Handle allocation failure
+        free(traversal);
+        return NULL;
+    }
 
-    while (currentIndex < numOfVertices) {
-        for (int i = 0; i < numOfVertices; i++){
-            if (adjacencyMatrix[peekStack(&current)->id][i] &&
-                !isVertexTraversed(traversal, vertices[i], numOfVertices)){
+    push(&current, &root);
+    visited[root.id] = true;
+
+    while (!isStackEmpty(current) && currentIndex < numOfVertices) {
+        Vertex* currentVertex = peekStack(&current);
+        traversal[currentIndex++] = *currentVertex;
+
+        // Explore neighbors
+        for (int i = 0; i < numOfVertices; i++) {
+            if (adjacencyMatrix[currentVertex->id][i] && !visited[i]) {
                 push(&children, &vertices[i]);
+                visited[i] = true; // Mark as visited
             }
         }
-        traversal[currentIndex] = *peekStack(&current);
-        currentIndex++;
+
+        pop(&current); // Pop the current vertex
+
+        // Move children to current stack
         while (!isStackEmpty(children)) {
-            if (!isInStack(current, *peekStack(&children))){
+            if (!isInStack(&current, *peekStack(&children))){
                 push(&current, pop(&children));
-            } else {
-                pop(&children);
             }
         }
     }
 
+    free(visited);
     return traversal;
 }
 

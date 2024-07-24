@@ -22,12 +22,9 @@ GraphInfo fillGraphInfo(char *filename) {
     GraphInfo result;
     char tempString[STRING_LEN];
 
-    // file checking
+    // Check if file exists
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
-        perror("Error opening file");
-        printf("%s not found.", filename);
-
         //assign null/0
         result.adjacencyMatrix = NULL;
         result.vertices = NULL;
@@ -40,14 +37,23 @@ GraphInfo fillGraphInfo(char *filename) {
     result.numOfVertices = parseInt(tempString);
     strcpy(tempString, "");
 
-    // memory for vertices
+    // Check if graph exists
+    if (result.numOfVertices == 0) {
+        //assign null/0
+        result.adjacencyMatrix = NULL;
+        result.vertices = NULL;
+        result.numOfVertices = 0;
+        return result;
+    }
+
+    // Memory for vertices
     result.vertices = (Vertex *)malloc(result.numOfVertices * sizeof(Vertex));
     for (int i = 0; i < result.numOfVertices; ++i) {
         result.vertices[i].name = (char *)malloc(STRING_LEN * sizeof(char));
         result.vertices[i].id = i;
     }
 
-    // memory for adjacency matrix
+    // Memory for adjacency matrix
     result.adjacencyMatrix = (bool **)malloc(result.numOfVertices * sizeof(bool *));
     for (int i = 0; i < result.numOfVertices; ++i) {
         result.adjacencyMatrix[i] = (bool *)malloc(result.numOfVertices * sizeof(bool));
@@ -56,7 +62,7 @@ GraphInfo fillGraphInfo(char *filename) {
         }
     }
 
-    // read adjacent vectors
+    // Read adjacent vectors
     for (int i = 0; i < result.numOfVertices; ++i) {
         fscanf(file, "%s", result.vertices[i].name);
         while (fscanf(file, "%s", tempString) == 1 && strcmp(tempString, "-1") != 0) {
