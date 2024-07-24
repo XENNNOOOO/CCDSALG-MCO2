@@ -3,6 +3,14 @@
 
 #include "search.h"
 
+/**
+ * Checks if a vertex has already been traversed.
+ *
+ * @param traversal The array of traversed vertices.
+ * @param vertex The vertex to check.
+ * @param numOfVertices The number of vertices in the traversal array.
+ * @return True if the vertex has been traversed; otherwise, false.
+ */
 bool isVertexTraversed(Vertex *traversal, Vertex vertex, int numOfVertices) {
     bool isTraversed = false;
     if (traversal == NULL) {
@@ -20,6 +28,15 @@ bool isVertexTraversed(Vertex *traversal, Vertex vertex, int numOfVertices) {
     return isTraversed;
 }
 
+/**
+ * Performs Breadth-First Search (BFS) traversal of a graph.
+ *
+ * @param adjacencyMatrix The adjacency matrix representing the graph.
+ * @param vertices The array of vertices in the graph.
+ * @param root The starting vertex for BFS.
+ * @param numOfVertices The number of vertices in the graph.
+ * @return An array of vertices representing the BFS traversal order. Returns NULL if memory allocation fails.
+ */
 Vertex* getBFSTraversal(bool** adjacencyMatrix, Vertex vertices[], Vertex root, int numOfVertices) {
     Queue children;
     Queue current;
@@ -67,6 +84,13 @@ Vertex* getBFSTraversal(bool** adjacencyMatrix, Vertex vertices[], Vertex root, 
     return traversal;
 }
 
+/**
+ * Checks if a vertex is present in a stack.
+ *
+ * @param stack The stack to check.
+ * @param vertex The vertex to search for.
+ * @return True if the vertex is in the stack; otherwise, false.
+ */
 bool isInStack(Stack* stack, Vertex vertex) {
     bool isInStack = false;
 
@@ -80,6 +104,15 @@ bool isInStack(Stack* stack, Vertex vertex) {
     return isInStack;
 }
 
+/**
+ * Performs Depth-First Search (DFS) traversal of a graph.
+ *
+ * @param adjacencyMatrix The adjacency matrix representing the graph.
+ * @param vertices The array of vertices in the graph.
+ * @param root The starting vertex for DFS.
+ * @param numOfVertices The number of vertices in the graph.
+ * @return An array of vertices representing the DFS traversal order. Returns NULL if memory allocation fails.
+ */
 Vertex* getDFSTraversal(bool** adjacencyMatrix, Vertex vertices[], Vertex root, int numOfVertices) {
     Stack children;
     Stack current;

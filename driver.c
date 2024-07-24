@@ -3,10 +3,24 @@
 
 #include "driver.h"
 
+/**
+ * Imports graph information from a file and returns a GraphInfo structure.
+ *
+ * @param filename The name of the file containing the graph data.
+ * @return A GraphInfo structure containing the adjacency matrix, vertices, and number of vertices.
+ */
 GraphInfo importFile(char* filename) {
     return fillGraphInfo(filename);
 }
 
+/**
+ * Searches for a vertex by its name.
+ *
+ * @param rootName The name of the vertex to search for.
+ * @param vertices The array of vertices in the graph.
+ * @param numOfVertices The number of vertices in the graph.
+ * @return A pointer to the vertex if found; otherwise, NULL.
+ */
 Vertex* searchVertexByName(char* rootName, Vertex* vertices, int numOfVertices) {
     for (int i = 0; i < numOfVertices; i++) {
         if (strcmp(vertices[i].name, rootName) == 0) {
@@ -16,6 +30,14 @@ Vertex* searchVertexByName(char* rootName, Vertex* vertices, int numOfVertices) 
     return NULL;
 }
 
+/**
+ * Calculates the degree of a vertex.
+ *
+ * @param adjacencyMatrix The adjacency matrix representing the graph.
+ * @param vertex The vertex whose degree is to be calculated.
+ * @param numOfVertices The number of vertices in the graph.
+ * @return The degree of the vertex.
+ */
 int getVertexDegree(bool** adjacencyMatrix, Vertex* vertex, int numOfVertices) {
     int degree = 0;
     int id = vertex->id;
@@ -28,6 +50,12 @@ int getVertexDegree(bool** adjacencyMatrix, Vertex* vertex, int numOfVertices) {
     return degree;
 }
 
+/**
+ * Exports graph traversal results and vertex degrees to a file.
+ *
+ * @param rootName The name of the starting vertex for traversal.
+ * @param graph A pointer to the GraphInfo structure containing the graph data.
+ */
 void exportFile(char* rootName, GraphInfo* graph) {
     const char filename[STRING_LEN] = {"TRAVERSALS.TXT"};
 
@@ -70,6 +98,13 @@ void exportFile(char* rootName, GraphInfo* graph) {
     fclose(file);
 }
 
+/**
+ * Displays the adjacency matrix of the graph.
+ *
+ * @param filename The name of the file containing the graph data.
+ * @param adjacencyMatrix The adjacency matrix representing the graph.
+ * @param vertices The array of vertices in the graph.
+ */
 void displayMatrix(char* filename, bool** adjacencyMatrix, Vertex* vertices) {
     char tempString[STRING_LEN];
     int numOfVertices;

@@ -3,6 +3,12 @@
 
 #include "adjacency_matrix.h"
 
+/**
+ * Converts a string to an integer.
+ *
+ * @param str The string to convert.
+ * @return The integer value of the string. Returns 0 if the string is not a valid integer.
+ */
 int parseInt(char* str) {
     char* ptr;
     int num = (int) strtol(str, &ptr, 10);
@@ -18,6 +24,12 @@ int parseInt(char* str) {
     }
 }
 
+/**
+ * Fills the GraphInfo structure by reading data from a file.
+ *
+ * @param filename The name of the file containing the graph data.
+ * @return A GraphInfo structure containing the graph data. If the file cannot be opened or contains invalid data, the fields will be set to NULL or 0.
+ */
 GraphInfo fillGraphInfo(char *filename) {
     GraphInfo result;
     char tempString[STRING_LEN];
