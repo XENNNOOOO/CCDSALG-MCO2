@@ -26,19 +26,25 @@ GraphInfo fillGraphInfo(char *filename) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         perror("Error opening file");
+        printf("%s not found.", filename);
 
         //assign null/0
         result.adjacencyMatrix = NULL;
-        result.graph = NULL;
+        result.vertices = NULL;
         result.numOfVertices = 0;
         return result;
     }
 
+    // Read the first integer
+    fscanf(file, "%s", tempString);
+    result.numOfVertices = parseInt(tempString);
+    strcpy(tempString, "");
+
     // memory for vertices
-    result.graph = (Vertex *)malloc(result.numOfVertices * sizeof(Vertex));
+    result.vertices = (Vertex *)malloc(result.numOfVertices * sizeof(Vertex));
     for (int i = 0; i < result.numOfVertices; ++i) {
-        result.graph[i].name = (char *)malloc(STRING_LEN * sizeof(char));
-        result.graph[i].id = i;
+        result.vertices[i].name = (char *)malloc(STRING_LEN * sizeof(char));
+        result.vertices[i].id = i;
     }
 
     // memory for adjacency matrix
@@ -52,10 +58,10 @@ GraphInfo fillGraphInfo(char *filename) {
 
     // read adjacent vectors
     for (int i = 0; i < result.numOfVertices; ++i) {
-        fscanf(file, "%s", result.graph[i].name);
+        fscanf(file, "%s", result.vertices[i].name);
         while (fscanf(file, "%s", tempString) == 1 && strcmp(tempString, "-1") != 0) {
             for (int j = 0; j < result.numOfVertices; ++j) {
-                if (strcmp(tempString, result.graph[j].name) == 0) {
+                if (strcmp(tempString, result.vertices[j].name) == 0) {
                     result.adjacencyMatrix[i][j] = true;
                     result.adjacencyMatrix[j][i] = true;
                     break;

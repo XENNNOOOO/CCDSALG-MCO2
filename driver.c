@@ -3,16 +3,8 @@
 
 #include "driver.h"
 
-bool** importFile(char* filename, Vertex* vertices, int* numOfVertices) {
-    bool**  adjMatrix;
-
-    adjMatrix = fillAdjacencyMatrix(filename, vertices, numOfVertices);
-    if (adjMatrix == NULL) {
-        fprintf(stderr, "%s not found.\n", filename);
-        return NULL;
-    }
-
-    return adjMatrix;
+GraphInfo importFile(char* filename) {
+    return fillGraphInfo(filename);
 }
 
 Vertex* searchVertexByName(char* rootName, Vertex* vertices, int numOfVertices) {
@@ -33,7 +25,6 @@ int getVertexDegree(bool** adjacencyMatrix, Vertex* vertex, int numOfVertices) {
             degree++;
         }
     }
-
     return degree;
 }
 
@@ -100,25 +91,23 @@ void displayMatrix(char* filename, bool** adjacencyMatrix) {
 }
 
 int main() {
-    char    filename[STRING_LEN];
-    char    rootName[STRING_LEN];
-    bool**  adjMatrix;
-    Vertex  vertices[MAX_VERTICES];
-    int     numOfVertices = 0;
+    char        filename[STRING_LEN];
+    char        rootName[STRING_LEN];
+    GraphInfo   graph;
 
     printf("Input filename: ");
     scanf("%255[^\n]s", filename);
     while (getchar() != '\n');
 
-    adjMatrix = importFile(filename, vertices, &numOfVertices);
-
-    displayMatrix(filename, adjMatrix);
+    graph = importFile(filename);
 
     printf("Input start vertex for the traversal: ");
     scanf("%255[^\n]s", rootName);
     while (getchar() != '\n');
 
-    exportFile(rootName, adjMatrix, vertices, numOfVertices);
+    exportFile(rootName, graph.adjacencyMatrix, graph.vertices, graph.numOfVertices);
+
+    displayMatrix(filename, graph.adjacencyMatrix);
 
     return 0;
 }
